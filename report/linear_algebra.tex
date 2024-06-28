@@ -1,0 +1,431 @@
+\part{Week 1}
+\chapter{Linear Algebra}
+Usual Linear algebra notation is changed to \textbf{Dirac Notation}.
+
+We consider vector spaces in $\mathbb{C}^n$, with additive \& multiplicative properties on $\mathbb{C}^n$ too, i.e $\mathbb{C}^n$ is \textit{n} dimensional. Here, the scalars are \textbf{complex}.
+
+\section{Dirac Notation}
+A vector $\psi$ is denoted by $\ket{\psi}$\footnote{$\ket{0}$ isn't the zero vector, zero vector is denoted by just 0}
+.$\ket{\psi}$ is referred to as ket, it’s vector dual $\bra{\psi} $ is referred to as bra. $\ket{\psi}$ is nothing but an n-tuple of complex numbers, $(\psi_1,\cdots, \psi_n)$ or a column vector $\begin{bmatrix} \psi_1 \\ \vdots \\ \psi_n \end{bmatrix}$
+
+few more dirac notations:
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|p{8cm}|}\hline
+        \textbf{Notation} & \textbf{Description}  \\\hline
+        $z^{*}$ & Complex conjugate of z, $z \in \mathbb{C}$. eg.$(1+i)^{*} = 1-i$ \\\hline 
+        $\braket{\phi | \psi}$ & Inner product (Dot product) of $\ket{\phi}$ and $\ket{\psi}$ \\\hline
+        $\ket{\psi} \otimes \ket{\phi} \text{or}
+\ket{\psi}\bra{\phi}$ & Outer product of $\ket{\psi}$ and $\ket{\phi}$ \\\hline
+        $A^{\dagger}$ & Hermitian conjugate or Adjoint of A, = $(A^T)^*$ \\\hline
+        $\braket{\psi|A|\phi}$ & Inner product between $\psi \text{ and } A\ket{\phi}$ or, Inner product between $\ket{\phi}$ and $A^{\dagger}\ket{\psi}$ \\\hline
+    \end{tabular}
+    \caption{Useful \textit{Dirac} notations.}
+    \label{tab:dirac_notations}
+\end{table}
+
+Revise spanning set, span, linear independence, basis, dimension. They're similar to the case of real scalars.
+
+I'll write down few important definitions from linear algebra (and few facts too):
+
+\section{Linear Operators}
+
+A function $A$, from vector space $V$ to $W$, which obey 
+
+$$
+A(\sum_i a_i\ket{v_i}) = \sum_i a_iA(\ket{v_i})
+$$
+
+in simpler words, operator on a linear combination of inputs is same linear combination of operator on each input
+
+When based of inputs \& output are specified, using coordinate vectors, A linear operator is equivalent to matrix multiplication.
+
+\subsection{Pauli Matrices}
+These are 4 fundamentally important matrices in quantum information \& computation.
+
+\begin{align*}
+\sigma_0 = I = \begin{bmatrix}  1 & 0 \\ 0 & 1\end{bmatrix}
+&
+\sigma_1 = \sigma_x = X = \begin{bmatrix}  0 & 1 \\ 1 & 0\end{bmatrix}
+\\
+\sigma_2 = \sigma_y = Y = \begin{bmatrix}  0 & -i \\ i & 0\end{bmatrix}
+&
+\sigma_3 = \sigma_z = Z = \begin{bmatrix}  1 & 0 \\ 0 & -1\end{bmatrix}
+\end{align*}
+
+\section{Inner Products}
+
+This is a bit different from it's real counterpart, due to the reason below.
+
+$$
+\braket{v|w} = (\ket{v},\ket{w}) = \sum_i v_i^*w_i = \begin{bmatrix}v_1^* \cdots v_n^*\end{bmatrix}\begin{bmatrix}w_1 \\ \vdots \\ w_n\end{bmatrix}
+$$
+
+the conjugate comes from the fact that this should denoted length squared (for equal vectors). the formal reason is:
+
+Inner product between two vectors $\ket{v}$ and $\ket{w} \in V$ is a function $(.,.):V×V\rightarrow \mathbb{C}$ which satisfies:
+
+\begin{enumerate}    
+\item $(\ket{v}, \sum_i \lambda_i\ket{w_i}) = \sum_i\lambda_i(\ket{v}, \ket{w_i})$
+\item $( \ket{v}, \ket{w} ) = (\ket{w}, \ket{v})^*$
+\item $(\ket{v}, \ket{v}) \geq 0, \text{0 only when} \ket{v} = 0$
+\end{enumerate}
+
+\begin{equation}
+( \sum_i\lambda_iw_i , v) = \sum_i\lambda_i^*(w_i,v)
+\end{equation}
+
+Any vector space that has a defined inner product is called an \textbf{inner product space} or \textbf{Hilbert space} (if finite dimension) in QIC.
+
+Revise orthogonality, norm, orthonormal set, gram-schmidt process. they're same as in real case.
+We'll consider only orthonormal based for linear operators, and assume same spaces have same bases.
+
+\subsection{Dual of $\ket{v}$}
+
+it would've been evident from dot product that
+
+$$
+\bra{v} = (\ket{v}^T)^*
+$$
+
+i.e if $\ket{v} = (v_1,\cdots, v_n)^T$, then
+
+$$
+\bra{v} = \begin{bmatrix}v_1^* \cdots v_n^*\end{bmatrix}
+$$
+
+\section{Outer Product}
+
+outer product of $\ket{v} \in V$  \&  $\ket{w} \in W$ is $\ket{v}\bra{w}$
+
+it can be seen that this is a matrix, hence it's a linear operator from W to V. let $\ket{w'} \in W$,
+
+\begin{align*}
+\underbrace{\ket{v}\bra{w}}_\text{operator}\ket{w'} =\ket{v} \underbrace{\braket{w|w'}}_\text{scalar}\end{align*}
+
+\subsection{Completeness Relation}
+Continuing from yesterday, there's this not so trivial property using outer product, called \textbf{completeness relation}
+
+$$
+\sum_i \ket{i}\bra{i} = I
+$$
+
+Here, $\ket{i}$’s form an orthonormal basis, they can be anything. one nice use of this is, if we have vector spaces V \& W, which have bases $\ket{v_1},\cdots,\ket{v_m}$ and $\ket{w_1},\cdots,\ket{w_n}$ then any linear transform $A : V \rightarrow W$ which is of size $n × m$  can be written as a linear combination of 
+
+$$
+\ket{w_1}\bra{v_1}, \cdots,\ket{w_2}\bra{v_1},\cdots,\ket{w_n}\bra{v_m}
+$$
+
+each of which are $n×m$. The linear combination is given by
+
+$$
+A = \sum_{ij} \underbrace{\braket{w_j|A|v_i}}_{\text{scalar}}\underbrace{\ket{w_j}\bra{v_i}}_{\text{one of the basis matrix}}
+$$
+
+eg. I can write the pauli matrix $\sigma_0$  as 
+
+$$
+1*\ket{0}\bra{0} + 0 *\ket{0}\bra{1} + \\0*\ket{1}\bra{0} + 1*\ket{1}\bra{1}
+$$
+
+\subsection{Cauchy Schwartz Inequality}
+
+For any two vectors $\ket{v}, \ket{w}$ of same dimension, the following inequality is always true
+
+$$
+\braket{v|v}\braket{w|w} \geq \braket{v|w}\braket{w|v} = |\braket{v|w}|^2
+$$
+
+\href{https://drive.google.com/file/d/1u_q4FOFGTbASSS0xR9YSNNd0d1mMmaXg/view?usp=drive_link}{here's} a short proof I've written. $\ket{0},\cdots,\ket{n}$ are orthonormal based I've considered/can be constructed by gram schmidt process.
+
+\section{Eigenvectors \& Eigenvalues}
+
+it's the same as you know, just a slight change in notation. we represent both eigenvalue and eigenvector label as $v$. 
+
+$$
+\underbrace{A}_{\text{linear operator}}\ket{v} = \underbrace{v}_{\text{scalar}}\ket{v}
+$$
+
+and the characteristic function is $\text{c}(\lambda) = \text{det}(A-\lambda I)$. it depends only on the operator, not on how it's matrix is represented.
+
+Eigenspace of an eigenvalue v is the set of vectors which have eigenvalue v. read diagonalisability, orthonormal decomposition, degenerate eigenvectors.
+
+\section{Special Operators}
+\subsection{Adjoints \& Hermitian operators}
+
+for any linear operator $A$ on a vector space $V$$A^{\dag}$, there exists a unique linear operator $A^{\dagger}$ such that, $\forall \ket{v},\ket{w} \in V$
+
+$$
+(\ket{v}, A\ket{w}) = (A^{\dag}\ket{v},\ket{w})
+$$
+
+I've deduced that $A^\dag = (A^T)^*$  \href{https://drive.google.com/file/d/12j8H4VlHlTrKI9OzHML-qFnC_DQJ2wmV/view?usp=drive_link}{here}, when $A$ is represented as a matrix. This is actually same as dual of a vector. Few properties:
+
+\begin{enumerate}
+\item $(AB)^\dag = B^\dag A^\dag$
+\item $\ket{v}^\dag = \bra{v}$
+\end{enumerate}
+
+Thus you can see $(A\ket{v})^\dag = \bra{v}A^\dag$, hence the above thing is evident.
+
+It is \textbf{anti-linear.}
+
+$$
+\left(\sum_i a_iA_i\right)^\dag =  \sum_i a_i^*A_i^\dag
+$$
+
+A \textbf{\textit{Hermitian}} or a \textit{\textbf{self-adjoint operator}} is a linear operator such that $A^\dag = A$.
+
+\subsection{Projectors}
+
+these are nice. suppose $W$ is a k-dimensional subspace of $V$, which is d-dimensional, we can always construct, using \textit{gram-schmidt} process, an orthonormal basis $\ket{1},\cdots,\ket{d}$ of $V$ such that $\ket{1},\cdots,\ket{k}$ is an orthonormal basis of $W$. Now we can project any vector in $V$ onto $W$, using this operator:
+
+$$
+P = \sum_{i=1}^{k}\ket{i}\bra{i}
+$$
+
+cross check this. This operator $P$ is called the \textbf{projector}. It is also Hermitian. and we'll use $P$ to refer to $V$. $Q = I - P$ is the \textbf{orthogonal complement} of $P$.
+
+\subsection{Normal Operators}
+
+An operator $A$ is normal if $A^\dag A = AA^\dag$. all hermitian operators are normal.
+
+
+\begin{theorem}[\textbf{Spectral Decomposition Theorem}]
+    
+\label{thm:spectral_decomposition}
+
+$$
+M \text{ is a normal operator on } V \iff M \text{ is diagonalisable}
+$$
+
+diagonalisable w.r.t some basis in $V$. The proof is interesting to read, do check it out.
+\end{theorem}
+
+\section{Tensor Products}
+\textit{Tensor product} is a way of putting vector spaces together to form larger vector spaces. For example, if we have vector spaces $V$ and $W$ of dimension \textit{m} \& \textit{n} respectively, the tensor product $V\otimes W$ represents an \textit{mn} dimensional vector space. 
+
+Suppose $\ket{v} \in V \ \& \ \ket{w} \in W$ be two vectors, their tensor product $\ket{v} \otimes \ket{w}$ is also represented as $\ket{v}\ket{w}, \ket{v,w}$ or even $\ket{vw}$, and it lies in \textit{mn} dimensional space $V \otimes W$
+
+They have few nice properties:
+\begin{enumerate}
+    \item For a scalar $z$,
+    \begin{align}
+        z(\ket{v} \otimes \ket{w}) =
+        (z\ket{v}) \otimes \ket{w}
+    \end{align}
+    \item For $\ket{v_1}, \ket{v_2} \in V$
+    \begin{align}
+        (\ket{v_1} + \ket{v_2}) \otimes \ket{w} = \ket{v_1} \otimes \ket{w} + \ket{v_2} \otimes \ket{w}
+    \end{align}
+    \item For $\ket{w_1}, \ket{w_2} \in W$
+    \begin{align}
+        \ket{v} \otimes (\ket{w_1} + \ket{w_2}) = \ket{v} \otimes \ket{w_1} + \ket{v} \otimes \ket{w_2}
+    \end{align}
+    \item 
+    If we have operators $A:V\xrightarrow{}V$ \& $B:W\xrightarrow{}W$, we can define a new operator $A \otimes B : V \otimes W \xrightarrow{} V \otimes W$, we can't write it in matrix form, but we know it's a linear operator and,
+    \begin{align}
+        (A \otimes B)(\ket{v} \otimes \ket{w}) \equiv A\ket{v} \otimes B\ket{w}
+    \end{align}
+    \item We can define inner product in $V \otimes W$ as
+    \begin{align}
+        (a_i\ket{v_i} \otimes \ket{w_i},
+        b_j\ket{v_j} \otimes \ket{w_j}) = a_i^*b_j \braket{v_i|v_j}\braket{w_i|w_j}
+    \end{align}
+    As we have a well defined inner product, this is a hilbert space too, we can use properties like adjoint, unitary, normal, hermitian matrices.
+
+    \subsection{Kronecker Product}
+    There is indeed a representation which would let us interpret tensor product in some manner, suppose we have two matrices $A_{m\times n}, B_{p \times q}$,
+    their tensor product in this representation is:
+    \begin{equation}
+        A \otimes B =
+        \begin{bmatrix}
+            A_{11}B & A_{12}B & \cdots & A_{1n}B \\
+            A_{21}B & A_{22}B & \cdots &
+            A_{2n}B \\
+            \vdots & \vdots & \vdots & \vdots \\
+            A_{m1}B & A_{m2}B & \cdots & A_{mn}B
+        \end{bmatrix}_{mp \times nq}
+    \end{equation}
+
+    for example, tensor product of Pauli matrices $X$ \& $Y$ is represented as
+    \begin{equation}
+        X \otimes Y =
+        \begin{bmatrix}
+            0\cdot Y & 1\cdot Y \\
+            1\cdot Y & 0\cdot Y
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            0 & 0 & 0 & -i \\
+            0 & 0 & i & 0 \\
+            0 & -i & 0 & 0 \\
+            i & 0 & 0 & 0
+        \end{bmatrix}
+    \end{equation}
+    and another example, 
+    \begin{equation}
+        \begin{bmatrix}
+            1 \\ 2
+        \end{bmatrix}
+        \otimes
+        \begin{bmatrix}
+            2 \\ 3
+        \end{bmatrix}
+        = 
+        \begin{bmatrix}
+            2 \\ 3 \\ 4 \\ 6
+        \end{bmatrix}
+    \end{equation}
+    Using similar notations, $\ket{\phi}^{\otimes k}$ means tensor product of $\ket{\phi}$ with itself k times.
+\end{enumerate}
+
+Just for practice, I'm writing down few tensor products, $I,X,Y,Z$ are pauli matrices.
+\begin{align}
+    X \otimes Z &= 
+    \begin{bmatrix}
+        0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & -1 \\
+        1 & 0 & 0 & 0 \\
+        0 & -1 & 0 & 0
+    \end{bmatrix} &
+    I \otimes X &=
+    \begin{bmatrix}
+        X & 0 \\ 0 & X
+    \end{bmatrix}
+    = 
+    \begin{bmatrix}
+        0 & 1 & 0 & 0 \\
+        1 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 1 \\
+        0 & 0 & 1 & 0
+    \end{bmatrix}
+\end{align}
+\begin{align}
+    X \otimes I &=
+    \begin{bmatrix}
+        0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 1 \\
+        1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0
+    \end{bmatrix}
+\end{align}
+Hence, tensor product \textbf{isn't commutative}.
+Few more facts,
+\begin{enumerate}
+    \item $(A \otimes B)^* = A^* \otimes B^*$
+    \item $(A \otimes B)^T = A^T \otimes B^T$
+    \item $(A \otimes B)^\dag = A^\dagger \otimes B^\dagger$
+    \item Tensor product preserves 
+    \begin{enumerate*}
+        \item Unitarity
+        \item Hermiticity
+        \item Positivity
+        \item Projection
+    \end{enumerate*}
+\end{enumerate}
+
+\section{Operator functions}
+If we have a function $f : \mathbb{C}^n \rightarrow \mathbb{C}^n$, we can define a corresponding matrix function, which acts on \textit{normal matrices} as follows
+
+\begin{equation}
+    A = \sum_a a\ket{a}\bra{a} \implies
+    f(A) \equiv \sum_a f(a)\ket{a}\bra{a}
+\end{equation}
+
+where $\sum_a a\ket{a}\bra{a}$ is a spectral decomposition (exists since A is normal \ref{thm:spectral_decomposition}). Now we can calculate square root, logarithm, exponential of a positive, positive-definite, normal operator respectively.
+for eg.
+\begin{equation}
+    \exp{(\theta Z)} =
+    \begin{bmatrix}
+        e^\theta  & 0 \\
+        0 & e^{-\theta}
+    \end{bmatrix}
+\end{equation}
+
+I'll do another example, let $A = \begin{bmatrix}
+    4 & 3 \\ 3 & 4
+\end{bmatrix}$, let's find square root of it.
+Eigenvalues of A are 7, 1. Their corresponding eigenvectors which form an orthonormal basis of $\mathbb{R}^2$ are $(\ket{0} + \ket{1})/\sqrt{2} = \ket{a}$ \& $(\ket{0}-\ket{1})/\sqrt{2} = \ket{b}$,
+\begin{align}
+    A &= 7\ket{a}\bra{a} + \ket{b}\bra{b} \\
+    \implies \sqrt{A} &= \sqrt{7}\ket{a}\bra{a} + \ket{b}\bra{b} \\
+    &= \begin{bmatrix}
+        \frac{\sqrt{7} + 1}{2} & \frac{\sqrt{7}-1}{2}\\
+        \frac{\sqrt{7}-1}{2} & \frac{\sqrt{7} + 1}{2} 
+    \end{bmatrix}
+\end{align}
+
+\subsection{Trace}
+This is just the sum of diagonal elements of a matrix. 
+\newcommand{\tr}[1]{\text{tr}(#1)}
+\begin{equation}
+    \tr{A} = \sum_i A_{ii}
+\end{equation}
+It's also defined as
+\begin{equation}
+    \tr{A} = \sum_i \braket{i|A|i}
+\end{equation}
+i.e it doesn't depend on which coordinate I represent A on, traces have these nice properties:
+\begin{enumerate}
+    \item It's \textit{cyclic}, $\tr{AB} = \tr{BA}$
+    \item $\tr{cA + dB} = c\tr{A} + d\tr{B}, c,d \in \mathbb{C}$
+    \item if $U$ is unitary, $\tr{A} = \tr{UAU^{\dag}}$   
+    \item $\tr{A\ket{\psi}\bra{\psi}} = \braket{\psi|A|\psi}$
+\end{enumerate}
+
+\subsection{Hilbert-Schmidt inner product}
+The vector space $L_V$ of linear operators on a Hilbert space $V$ can be converted into a Hilbert space by defining an inner product on $L_V \times L_V$ as
+\begin{equation}
+    (A, B) \equiv \tr{A^\dag B}
+\end{equation}
+this is known as the \textit{Hilbert-Schmidt} or \textit{Trace} inner product.
+
+\section{Commutator \& Anti-commutator}
+
+The commutator between two operators $A$ \& $B$ is defined as
+\begin{equation}
+    [A, B] = AB - BA
+\end{equation}
+if $[A, B] = 0 \implies AB = BA$, then we say $A$ \textit{commutes} with $B$. The \textit{anti-commutator} between $A$ \& $B$ is defined as
+\begin{equation}
+    {A, B} = AB + BA
+\end{equation}
+we say $A$ \textit{anti-commutes} with $B$ if {A, B} = 0.
+
+\begin{theorem}[\textbf{Simultaneous diagonalization theorem}]
+    If $A$ \& $B$ are Hermitian operators, then
+    $[A, B] = 0 \implies \exists$ an orthonormal basis such that both $A$ and $B$ are \textit{simultaneously diagonalizable} w.r.t same basis.
+\end{theorem}
+
+\subsubsection{Commutations \& Anti-commutation for Pauli matrices}
+\begin{align}
+    [X, Y] &= 2iZ & [Y,Z] &= 2iX & [Z,X] &= 2iY \\
+\end{align}
+we can write it using $\epsilon_{jkl}$, the antisymmetric tensor, for which $\epsilon_{jkl} = 0$ except for $\epsilon_{123} = \epsilon_{231} = \epsilon_{312} = 1$ and $\epsilon_{321} = \epsilon_{213} = \epsilon_{132} = -1$:
+\begin{align}
+    [\sigma_j, \sigma_k] = 2i\sum_{i=1}^3 \epsilon_{jkl}\sigma_l
+\end{align}
+Also, $\{\sigma_i, \sigma_j\} = 0, \forall i\neq j, i.j \in {1,2,3}$. whereas $\{\sigma_0, \sigma_j\} = 2\sigma_j$. 
+
+\section{Polar and Singular value decompositions}
+\begin{theorem}[\textbf{Polar decomposition}]
+    Let $A$ be a linear operator on a vector space $V$. Then there exist unitary $U$ and \textbf{positive operators} $J$ and $JK$ such that
+    \begin{equation}
+        A = UJ = KU
+    \end{equation}
+    where the unique positive operators $J$ \& $K$ are $J \equiv \sqrt{A^\dag A}$ and $K \equiv \sqrt{AA^\dag}$, if $A$ is invertible, $U$ is unique.
+\end{theorem}
+$A=UJ$ is the left polar decomposition of $A$, and $A=KU$ is the right polar decomposition of A
+
+Singular value decomposition is just polar decomposition \& spectral decomposition.
+\begin{corollary}[\textbf{Singular value decomposition}]
+    Let A is a square matrix, Then $\exists$ unitary $U\ \& \ V$, a diagonal matrix $D$ with \textbf{non-negative entries} such that
+    \begin{align}
+        A = UDV
+    \end{align}
+    diagonal elements of D are called \textbf{singular values} of A.
+\end{corollary}
+\begin{proof}
+    By polar decomposition, A = SJ, where S is unitary and J is positive.  By spectral decomposition, $J = TDT^\dag$ where T is unitary and D has non negative entries. setting $U=ST$ and $V=T^\dag$ we get the above thing.
+\end{proof}

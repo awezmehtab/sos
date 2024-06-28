@@ -1,0 +1,87 @@
+\documentclass[a4paper, 12pt]{report}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{braket}
+\usepackage[inline]{enumitem}
+\usepackage{hyperref}
+\usepackage{esvect}
+\usepackage{tikz}
+\usepackage{pgf}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{multicol}
+\usepackage[ruled, lined]{algorithm2e}
+\usepackage [english]{babel} %for quotes
+\usepackage [autostyle, english = american]{csquotes}
+\usepackage{crimson}
+\MakeOuterQuote{"}
+% \usepackage{tgbonum}
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{Awez}
+% \fancyhead[L]{\chapter}
+\fancyfoot[C]{\thepage}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{#1}}
+\fancyhead[L]{\leftmark}
+
+\usetikzlibrary{positioning, arrows.meta}
+
+\title{{\huge Summer of Science} \\ Quantum Computing, Information \& \\ Quantum Technologies - P02}
+\author{
+    Shaik Awez Mehtab \\
+    \textbf{Roll no.:} 23b1080 \\ 
+    \textbf{Mentor:} Kanishk Modi
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{postulate}{Postulate}[chapter]
+\newtheorem{postulate*}{Postulate}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\newcommand{\inbk}[1]{\bra{\psi}#1\ket{\psi}}
+\newcommand{\qv}{\ket{\psi}}
+\newcommand{\qvd}{\bra{\psi}}
+\newcommand{\op}[1]{\ket{#1}\bra{#1}}
+\newcommand{\ip}[1]{\bra{#1}\ket{#1}}
+\newcommand{\tr}[1]{\text{tr}(#1)}
+\newcommand{\qo}{\ket{0}}
+\newcommand{\qi}{\ket{1}}
+\newcommand{\E}[1]{\operatorname{\mathcal{E}}(#1)}
+
+\usepackage{eso-pic}
+\newcommand\BackgroundPic{%
+\put(0,0){%
+\parbox[b][\paperheight]{\paperwidth}{%
+\vfill
+\centering
+\includegraphics[width=\paperwidth,height=\paperheight,%
+keepaspectratio]{images/bg.jpg}%
+\vfill
+}}}
+
+\begin{document}
+
+\color{white}
+\AddToShipoutPicture*{\BackgroundPic}
+\input{titlepage}
+\color{black}
+
+\input{abstract}
+\input{future_poa}
+\tableofcontents
+
+\include{linear_algebra}
+\include{postulates}
+\include{overview}
+\include{week_3}
+\include{week_4}
+
+\end{document}
