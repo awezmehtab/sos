@@ -36,13 +36,14 @@ Trace distance and fidelity are static distance measures.
 For \textit{dynamic measure} of distance, suppose a random variable $X$ is passed through a noise channel to produce $Y$ shown by Markov process $X\longrightarrow Y$, a dynamic measure showing how much information is preserved is $p(X\neq Y)$. This can be done using trace distance, for which let's construct a copy $\Tilde{X}$ of $X$ which is also a random variable. Now $X$ is passed through the channel, leaving output $Y$. The closeness between initial perfectly correlated pair $(\Tilde{X}, X)$ and the pair $(\Tilde{X}, Y)$ can be shown to be
 \begin{equation}
     D((\Tilde{X},X), (X, Y)) = p(X\neq Y)
+    \label{eq:trace_distance_using_copy}
 \end{equation}
 This thing we did to calculate $p(X\neq Y)$ is unique to classical mechanics. We can't \textit{directly} calculate quantum analogue of $p(X\neq Y)$ if $X$ and $Y$ exist at different times. We use quantum entanglement to define dynamic measure similar to the construction shown above. 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{images/dynamic_measure.png}
     \caption{The probability of an error in the channel is equal to the trace distance between the probability distributions for $( \Tilde{X}, X)$ and $( \Tilde{X}, Y )$.}
-    \label{fig:dynamic_measure}
+    \label{fig:enter-label}
 \end{figure}
 
 \section{How close are two quantum states}
@@ -173,4 +174,164 @@ There's no similar Bloch sphere representation for fidelity but it does satisfy 
     \end{equation}
     equality is when $U=V^\dag$ when $A=|A|V$ is polar decomposition of $A$.
 \end{lemma}
-By Uhlmann's formula it can be shown that fidelity is \textit{symmetric} in its inputs i.e $F(\rho, \sigma) = F(\sigma, \rho)$ and also that it's bound, $0 \leq F(\rho, \sigma) \leq 1$. Also $\rho=\sigma \implies F(\rho, \sigma)=1$ else it's less than 1.
+By Uhlmann's formula it can be shown that fidelity is \textit{symmetric} in its inputs i.e $F(\rho, \sigma) = F(\sigma, \rho)$ and also that it's bound, $0 \leq F(\rho, \sigma) \leq 1$. Also $\rho=\sigma \implies F(\rho, \sigma)=1$ else it's less than 1. Quantum fidelity is related to classical fidelity in the following way:
+\begin{equation}
+    F(\rho, \sigma) = \min_{E_m} F(p_m, q_m)
+\end{equation}
+where $E_m$ are POVMs, $p_m = \tr{\rho E_m}$, $q_m = \tr{\sigma E_m}$ are probability distributions corresponding to the POVM $\{ E_m \}$. 
+
+We can define \textit{angle} between states $\rho$ and $\sigma$ by
+\begin{equation}
+    A(\rho, \sigma) = \arccos{F(\rho, \sigma)}
+\end{equation}
+This is non-negative, symmetric in inputs and zero when $\rho = \sigma$. It can be shown to satisfy triangle inequality, and thus is a metric.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/fidelity_angle.png}
+    \caption{Angle between unit vectors is a metric}
+    \label{fig:fidelity-angle}
+\end{figure}
+Qualitatively, fidelity behaves like "upside down" of trace distance. It decreases as two states become more distinguishable and vice versa. Fidelity in \textit{non decreasing} as shown by the theorem
+\begin{theorem}[\textbf{Monotonicity of fidelity}]
+    Suppose $\rho$, $\sigma$ be density operators, and $\mathcal{E}$ is a trace-preserving operation, then
+    \begin{equation}
+        F(\E{\rho}, \E{\sigma}) \geq F(\rho, \sigma)
+    \end{equation}
+\end{theorem}
+Angles we've defined above follow \textbf{contractivity} which is $A(\E{\rho}, \E{\sigma}) \leq A(\rho, \sigma)$, there's also \textit{strong concavity} of fidelity like trace distance
+\begin{theorem}[\textbf{Strong concavity of fidelity}]
+    Let $p_i$, $q_i$ be probability distributions over the same index set, $\rho_i$, $\sigma_i$ also indexed by the same index set. Then 
+    \begin{equation}
+        F \left( \sum_i p_i\rho_i, q_i\sigma_i \right)
+        \geq
+        \sum_i \sqrt{p_iq_i}F(\rho_i, \sigma_i)
+    \end{equation}
+\end{theorem}
+
+\subsection{Relationships between distance measures}
+Despite their different forms, trace distance and fidelity are closely related. In pure states, they're completely equivalent to each other, to see this consider two pure state $\ket{a}$ and $\ket{b}$, using Gram-schmidt we can find states $\qo$ and $\qi$ such that $\ket{a} = \qo$ and $\ket{b}=\cos{\theta}\qo + \sin{\theta}\qi$. Then $F(\ket{a}, \ket{b}) = |\cos{\theta} |$ and
+\begin{align}
+    D(\ket{a}, \ket{b}) &= \frac{1}{2}\text{tr} \left|
+     \begin{bmatrix}
+         1-\cos^2\theta & -\cos{\theta}\sin{\theta} \\
+         -\cos{\theta}\sin{\theta} & -\sin^2\theta
+     \end{bmatrix} 
+    \right|
+    \\
+    &= |\sin{\theta}| \\
+    &= \sqrt{1-F(\ket{a}, \ket{b})^2}    
+\end{align}
+For mixed states $\rho$, $\sigma$ let $\qv$ and $\ket{\varphi}$ be purifications of $\rho$, $\sigma$ such that $F(\rho, \sigma) = |\braket{\psi | \varphi}| = F(\qv, \ket{\varphi})$. Since trace distance is non-increasing under the partial trace,
+\begin{align}
+    D(\rho, \sigma) &\leq D(\qv, \ket{\varphi}) \\ 
+    &= \sqrt{1-F(\rho, \sigma)^2}
+\end{align}
+It can be further shown that
+\begin{equation}
+    1-F(\rho, \sigma) \leq D(\rho, \sigma) \leq \sqrt{1-F(\rho, \sigma)^2}
+\end{equation}
+
+\section{How well does a quantum channel preserve information?}
+We'll try to quantify how much that state has "changed" from $\qv$ to $\E{\op{\psi}}$ due to an operation $\mathcal{E}$ using the distance measures discussed. Let's look at a simple example how a state changes under depolarizing channel using fidelity
+\begin{align}
+    F(\qv, \E{\op{\psi}}) &= \sqrt{\bra{\psi}
+    \left( p\frac{I}{2} + (1-p)\op{\psi} \right) \qv
+    }\\
+    &= \sqrt{1-\frac{p}{2}}
+\end{align}
+it can be clearly seen when we reduce $p$, fidelity get's close to one hence the states becoming more indistinguishable. There's nothing special about fidelity that trace distance doesn't have but we'll stick to this. But in real quantum systems, we don't even know initial state $\qv$ in advance so we try to \textit{minimize} fidelity to get worst-case measure
+\begin{equation}
+    F_{\min}(\mathcal{E}) \equiv \min_{\qv} F(\qv, \E{\op{\psi}})
+\end{equation}
+for depolarizing channel it doesn't matter and it's just $\sqrt{1-p/2}$. But for phase damping channel
+\begin{equation}
+    \E{\rho} = p\rho + (1-p)Z\rho Z
+\end{equation}
+The fidelity will be
+\begin{align}
+    F(\qv, \E{\op{\psi}}) &= \sqrt{\bra{\psi} \left( 
+    p\op{\psi} + (1-p)Z\op{\psi}Z
+    \right)\qv} \\
+    &= \sqrt{p + (1-p)\bra{\psi}Z\qv^2}
+\end{align}
+Now this minimizes when $\frac{\qo+\qi}{\sqrt{2}}$. Thus for phase damping, minimum fidelity becomes
+\begin{equation}
+    F_{\min}(\mathcal{E}) = \sqrt{p}
+\end{equation}
+We haven't considered mixed states, but using joint concavity of fidelity it can be shown that allowing mixed states doesn't change $F_{\min}$. Now, we're not only interesting in saving quantum states while transmitting them but we should also look up on when we're computing for example implementing a quantum gate described by $U$. Thus we define \textit{gate-fidelity} as
+\begin{equation}
+    F(U, \mathcal{E}) = \min_{\qv} F(U\qv, \E{\op{\psi}})
+\end{equation}
+For example, if we're implementing \textsc{not} gate, but instead implement a noisy operation $\E{\rho} = (1-p)X\rho X + pZ\rho Z$, then gate fidelity is
+\begin{align}
+    F(X, \mathcal{E}) &=
+    \min_{\qv} \sqrt{\bra{\psi}X
+    \left( (1-p)X\op{\psi}X + pZ\op{\psi}Z \right)
+    X\qv} \\
+    &= \min_{\qv} = \sqrt{(1-p) + p\braket{\psi | Y | \psi}^2}
+    \\ &= \sqrt{1-p}.
+\end{align}
+
+\subsection{Quantum sources of information and the entanglement fidelity}
+Even though we've talked a lot about quantum sources we haven't actually defined it. One interesting definition is imagining a stream of quantum systems being produced by some physical process, with their states represented as $\rho_{X_1}, \rho_{X_2}, \dots,$ where $X_j$ are identically distributed random variables and $\rho_j$ is some fixed set of operators. For example, a stream of qubits preparing $\qo$ with $1/2$ probability and $(\qo+\qi)/\sqrt{2}$ with another $1/2$ of probability.
+
+This \textit{ensemble} notion of quantum source leads to notion of \textit{ensemble average fidelity} which captures the idea that source is well preserved under the action of a noisy channel described by trace preserving operator $\mathcal{E}$, as
+\begin{equation}
+    F = \sum_j p_j F(\rho_j, \E{\rho_j})^2,
+\end{equation}
+Here, $F=1$ if and only if $\E{\rho_j}=\rho_j$ for all $j$ such that $p_j>0$
+
+The second notion of quantum source is motivated by the fact that a channel preserving information also preserves \textit{entanglement} well. We'll use quantum analogue of what we've considered in \ref{eq:trace_distance_using_copy}.
+We'll suppose a quantum system $Q$ entangled with a fictious system $R$, such that the joint state $QR$ is pure. It turns out the result doesn't depend on how this purification is done. Then the system $Q$ is subjected to dynamics described by $\mathcal{E}$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/entanglement-fidelity.png}
+    \caption{The $RQ$ picture of quantum channel. The initial state of $RQ$ is a pure state.}
+    \label{fig:entanglement-fidelity}
+\end{figure}
+
+How well is the entanglement preserved by the quantum operation $\mathcal{E}$ is described by \textit{entanglement fidelity} $F(\rho, \mathcal{E})$ which is defined for trace preserving operations $\mathcal{E}$ by
+\begin{align}
+    F(\rho, \mathcal{E}) &\equiv F(RQ, R'Q')^2 \\
+    &= \bra{RQ} \left[ (\mathcal{I}_R \otimes \mathcal{E}) (\op{RQ}) \right] \ket{RQ}
+\end{align}
+where prime implies after the operation. Entanglement fidelity close to $1$ implies well preserved state and vice versa. One of the important properties of entanglement fidelity is that there's a nice formula to calculate it exactly. Suppose $E_i$ is a set of operation elements for $\mathcal{E}$. Then
+\begin{align}
+    F(\rho, \mathcal{E})  = \bra{RQ} \rho^{R'Q'} \ket{RQ} = \sum_i |\braket{RQ | E_i | RQ}|^2.
+    \label{eq:letsoo}
+\end{align}
+
+Suppose $\ket{RQ} = \sum_j \sqrt{p_j}\ket{j}\ket{j}$, where $\rho = \sum_j \op{j}$. Then it can be proved that
+\begin{align}
+    \bra{RQ} E_i \ket{RQ} = \tr{E_i\rho}
+\end{align}
+Substituting this is equation \ref{eq:letsoo} we get a useful formula
+\begin{equation}
+    F(\rho, \mathcal{E}) = \sum_i | \tr{\rho E_i} |^2
+\end{equation}
+
+Surprisingly, these two notions are closely related too. This can be seen in two useful properties. First, the entanglement fidelity is a lower bound on the square of the static fidelity between the output and input to the process,
+\begin{equation}
+    F(\rho, \mathcal{E}) \leq \left[ F(\rho, \E{\rho} \right]^2
+\end{equation}
+This states that it's harder to preserve entanglement than it is compared to pure states. The second property is that it is a \textit{convex} function of $\rho$. i.e
+\begin{equation}
+    F\left( \sum_j p_j\rho_j, \mathcal{E} \right) \leq \Bar{F}
+\end{equation}
+This shows that any channel $\mathcal{E}$ which does a good job of preserving entanglement between a source system $\rho$ and reference system will automatically preserve  the ensemble source described by probabilities $p_j$ and states $\rho_j$ such that $\sum_j p_j\rho_j = \rho$.
+
+I'll try to conclude with most important points yet.
+\begin{enumerate}
+    \item $0\leq F(\rho, \mathcal{E}) \leq 1$. From properties of static fidelity.
+    \item Entanglement fidelity is linear in quantum operation input. This is immediate too.
+    \item For pure state inputs, entanglement fidelity is square of static fidelity between input and output,
+    \begin{equation}
+        F(\qv, \mathcal{E}) = F(\qv, \E{\op{\psi}})^2.
+    \end{equation}
+    \item $F(\rho, \mathcal{E})=1$ if and only if for all pure state $\qv$ in support of $\rho$
+    \begin{equation}
+        \E{\op{\psi}} = \op{\psi}.
+    \end{equation}
+    \item Suppose that $\bra{\psi}\E{\op{\psi}}\qv \leq 1-\eta$ for all $\qv$ in support of $\rho$, for some $\eta$ then $F(\rho, \mathcal{E}) \geq 1-(3\eta/2)$.
+\end{enumerate}

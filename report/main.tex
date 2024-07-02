@@ -45,6 +45,20 @@
 \newtheorem{lemma}{Lemma}
 \theoremstyle{remark}
 \newtheorem*{remark}{Remark}
+\newtheoremstyle{exercisestyle}%                % Name
+{}%                                     % Space above
+{}%                                     % Space below
+{}%                                     % Body font
+{}%                                     % Indent amount
+{\bfseries}%                            % Theorem head font
+{}%                                     % Punctuation after theorem head
+{\newline}%                             % Space after theorem head, ' ', or \ne
+{\thmname{#1}\thmnumber{ #2} (\thmnote{#3})}%  
+\theoremstyle{exercisestyle}
+\newtheorem{exercice}{Theorem}
+\newenvironment{ntheorem}[1][]{% 
+\begin{exercice}[#1]\leavevmode\vspace{-\baselineskip}%
+}{\end{exercice}}
 
 \newcommand{\inbk}[1]{\bra{\psi}#1\ket{\psi}}
 \newcommand{\qv}{\ket{\psi}}
@@ -83,5 +97,6 @@ keepaspectratio]{images/bg.jpg}%
 \include{overview}
 \include{week_3}
 \include{week_4}
+\include{week_5}
 
 \end{document}
