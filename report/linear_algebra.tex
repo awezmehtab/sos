@@ -63,7 +63,7 @@ $$
 
 the conjugate comes from the fact that this should denoted length squared (for equal vectors). the formal reason is:
 
-Inner product between two vectors $\ket{v}$ and $\ket{w} \in V$ is a function $(.,.):V×V\rightarrow \mathbb{C}$ which satisfies:
+Inner product between two vectors $\ket{v}$ and $\ket{w} \in V$ is a function $(.,.):V \times V\rightarrow \mathbb{C}$ which satisfies:
 
 \begin{enumerate}    
 \item $(\ket{v}, \sum_i \lambda_i\ket{w_i}) = \sum_i\lambda_i(\ket{v}, \ket{w_i})$
@@ -80,7 +80,7 @@ Any vector space that has a defined inner product is called an \textbf{inner pro
 Revise orthogonality, norm, orthonormal set, gram-schmidt process. they're same as in real case.
 We'll consider only orthonormal based for linear operators, and assume same spaces have same bases.
 
-\subsection{Dual of $\ket{v}$}
+\subsection{Dual of a vector}
 
 it would've been evident from dot product that
 
@@ -110,13 +110,13 @@ $$
 \sum_i \ket{i}\bra{i} = I
 $$
 
-Here, $\ket{i}$’s form an orthonormal basis, they can be anything. one nice use of this is, if we have vector spaces V \& W, which have bases $\ket{v_1},\cdots,\ket{v_m}$ and $\ket{w_1},\cdots,\ket{w_n}$ then any linear transform $A : V \rightarrow W$ which is of size $n × m$  can be written as a linear combination of 
+Here, $\ket{i}$’s form an orthonormal basis, they can be anything. one nice use of this is, if we have vector spaces V \& W, which have bases $\ket{v_1},\cdots,\ket{v_m}$ and $\ket{w_1},\cdots,\ket{w_n}$ then any linear transform $A : V \rightarrow W$ which is of size $n \times m$  can be written as a linear combination of 
 
 $$
 \ket{w_1}\bra{v_1}, \cdots,\ket{w_2}\bra{v_1},\cdots,\ket{w_n}\bra{v_m}
 $$
 
-each of which are $n×m$. The linear combination is given by
+each of which are $n \times m$. The linear combination is given by
 
 $$
 A = \sum_{ij} \underbrace{\braket{w_j|A|v_i}}_{\text{scalar}}\underbrace{\ket{w_j}\bra{v_i}}_{\text{one of the basis matrix}}
@@ -358,7 +358,7 @@ Eigenvalues of A are 7, 1. Their corresponding eigenvectors which form an orthon
 
 \subsection{Trace}
 This is just the sum of diagonal elements of a matrix. 
-\newcommand{\tr}[1]{\text{tr}(#1)}
+% \newcommand{\tr}[1]{\text{tr}(#1)}
 \begin{equation}
     \tr{A} = \sum_i A_{ii}
 \end{equation}
