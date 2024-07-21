@@ -1,5 +1,4 @@
 \documentclass[a4paper, 12pt]{report}
-\usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsfonts}
@@ -17,15 +16,12 @@
 \usepackage[ruled, lined]{algorithm2e}
 \usepackage [english]{babel} %for quotes
 \usepackage [autostyle, english = american]{csquotes}
-\usepackage{fontspec} % for \textsc support
-\usepackage{crimson} % FONT
+\usepackage{cochineal} % FONT
+% \usepackage[cochineal]{newtxmath} % MATH-FONT will be similar
+\usepackage{scrextend}
 \MakeOuterQuote{"}
 % \usepackage{tgbonum}
 \usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}
-
-% to resolve error with fancyhdr package
-\setlength{\headheight}{14.49998pt}
-\addtolength{\topmargin}{-2.49998pt}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -106,5 +102,6 @@ keepaspectratio]{images/bg.jpg}%
 \include{week_4}
 \include{week_5}
 \include{week_6}
+\include{week_7}
 
 \end{document}

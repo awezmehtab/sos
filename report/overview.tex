@@ -68,8 +68,11 @@ In \textit{private key cryptosystems}, both party share a private key initially,
 
 In \textit{public key cryptosystems}, each party makes it's own 'public key', which is made \textit{available to the genreal public}. Using this key of Bob, Alice can encrypt the message. For a third person, it's \textit{extremely difficult} to decrypt this. Not even Alice can decrypt this in real time. Only Bob, who has the keys to his public key personally, can decrypt it. This is most popular these days. The encryption is done through \textit{RSA cryptosystem}. The key here is, it should be extremely decrypt the encryption only with the public key. For this, RSA uses something closely similar to factoring. But Shor's algorithm, run on a quantum computer can to this effectively. Few use discrete logarithm problem, which can also be done effectively by Shor's algorithm. This implies a need of quantum computing and quantum information.
 
-The most striking of these in the study of \textit{quantum entanglement}. It is a unique quantum mechanical \textit{resource} which plays a key role in many applications of QIC. It's like iron to the classical world's bronze age. There's no proper theory of quantum entanglement as of now, a lot of effort is being made. Further study of quantum entanglement is going to lead to amazing new discoveries in quantum computation \subsection{Measurement in bases other than the computational basis}
-If we try to represent the state of a system $\qv = \alpha \qo + \beta \qi$ in a different basis, $\ket{a}$ and $\ket{b}$, which are \textit{orthonormal}, we can write it as $\alpha'\ket{a}+\beta'\ket{b}$. According to the postulates of quantum mechanics, if we try to measure with respect to the basis $\ket{a}, \ket{b}$, we get \textit{a} with probability $|\alpha'|^2$ and \textit{b} with probability $|\beta'|^2$. We will learn more about the efficiency of measuring with respect to a basis in further study. of $\qo$ and $\qi$ as \begin{equation}
+The most striking of these in the study of \textit{quantum entanglement}. It is a unique quantum mechanical \textit{resource} which plays a key role in many applications of QIC. It's like iron to the classical world's bronze age. There's no proper theory of quantum entanglement as of now, a lot of effort is being made. Further study of quantum entanglement is going to lead to amazing new discoveries in quantum computation and quantum information.
+
+\section{Quantum Bits}
+
+A \textit{bit} is a fundamental concept in classical computation and classical information. An analogous thing in QIC is a \textit{quantum bit} or \textit{qubit}. We'll treat it as a mathematical object but it also has correspondence with real world objects. Like a classical bit has 0, 1 as it's states, a qubit's analogous states are $\ket{0}$ and $\ket{1}$. In general a qubit can have the general state which is a \textit{linear combination} or \textit{superposition} of $\qo$ and $\qi$ as \begin{equation}
     \qv = \alpha \qo + \beta \qi,\ \alpha,\beta \in \mathbb{C}
 \end{equation}
 $\qo, \qi$ are known as \textit{computational basis states}. Unlike a classical bit, we can't determine state of a qubit. When we try observing/measuring it, we get $\qo$ with probability $|\alpha|^2$ and $\qi$ with probability $|\beta|^2$. Thus $|\alpha|^2 + |\beta|^2 = 1$. Hence we can think of the state as unit vector in a complex vector space with the computational bases. This unobservablity of a qubit makes up the heart of QIC. 
@@ -115,7 +118,7 @@ If we try to measure $\qo$, we get the output 0 with probability $\frac{1}{2}$ a
 \section{Quantum Computation}
 Similar to an electrical circuit, there's a \textit{quantum circuit} which performs operations on qubits using \textit{quantum gates}.
 \subsection{Single qubit gates}
-We can think of a \textbf{not} gate similar to it's classical analogue, which converts $\qo$ to $\qi$  and vice-versa. It's also linear, i.e \textbf{not} gate when acted on the state
+We can think of a \textsc{not} gate similar to it's classical analogue, which converts $\qo$ to $\qi$  and vice-versa. It's also linear, i.e \textsc{not} gate when acted on the state
 \begin{equation}
     \alpha\qo + \beta\qi
 \end{equation}

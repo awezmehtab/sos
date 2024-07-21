@@ -117,3 +117,146 @@ where $x_1x_2\dots x_n$ means product of those bits. It means operation $U$ is a
     \caption{$C^n(U)$ operation for $n=4$ and $k=3$.}
     \label{fig:multi-qubit-operation}
 \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/c2u_gate.png}
+    \caption{$C^2(U)$ gate. $V$ is a unitary operator satisfying $V^2=U$. When $V\equiv (1-i)(1+iX)/2$ represents the Toffoli gate.}
+    \label{fig:c2u}
+\end{figure}
+Remember that when $U=X$, $C^2(U)$ is known as the \textit{Toffoli gate}.
+
+How $C^n(U)$ is implemented is interesting, first we take the first $n$ qubits as $\ket{c_1},\ket{c_2}\dots \\ \ket{c_n}$, we use $(n-1)$ intermediate working qubits which are all initially and finally $\qo$, which store $\ket{c_1c_2},\ket{c_1c_2c_3}\dots \ket{c_1c_2\dots c_n}$. This is done using toffoli gates which is applied between $\ket{c_1}$ and $\ket{c_2}$ with the output to first working qubit, the next toffoli gate is applied between first working qubit and $\ket{c_3}$ which gives $\ket{c_1c_2c_3}$ and so on, thus giving $\ket{c_1c_2\dots c_n}$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{images/c_n_u_implementation.png}
+    \caption{Implementation of $C^n(U)$ circuit.}
+    \label{fig:c-n-u-implementation}
+\end{figure}
+
+We are considering conditionals being $1$ till now, but sometimes it's useful to keep the conditional as $0$ for which we introduce a notation, we keep an open circle (without darkening it) whereas we used to have a darkened circle till now.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/0_notation.png}
+    \caption{\sc{cnot} gate, with the conditional being that first qubit is set to $0$.}
+    \label{fig:0-notation}
+\end{figure}
+
+\section{Measurement}
+As we've shown before measurements will be shown by a `meter' symbol, especially projective measurements. There are two major principles worth emphasizing early, first is that classically conditioned operations can be replaced by quantum controlled operations:
+\\
+\begin{addmargin}[2em]{2em}
+    \textbf{Principle of deferred measurement:} Measurements can always be moved from an intermediate state of a quantum circuit to the end of the circuit; if the measurement results are used at any stage, then the classically conditioned operations can be replaced by conditional quantum operations. \\
+\end{addmargin}
+\begin{addmargin}[2em]{2em}
+    \textbf{Principle of implicit measurement:} Without loss of generality, any unterminated quantum wires (qubits which are not measured) at the end of a quantum circuit may be assumed to be measured.
+\end{addmargin}
+
+\section{Universal quantum gates}
+If a set of gates can compute any arbitrary classical function, they are said to bee \textit{universal} for classical computation. Toffoli gate is universal for classical computation, hence quantum computation subsumes classical conputation.
+\subsection{Two level unitary gates are universal}
+We'll see how to decompose a $d$-dimensional unitary matrix $U$ into a product of \textit{two-level unitary matrices}, which act non-trivially on only two or fewer components. We'll understand what're these by going forward. Let's take an example $U$ where it's $3\times3$,
+\begin{equation}
+    U = \begin{bmatrix}
+        a & d & g \\
+        b & e & h \\
+        c & f & i \\
+    \end{bmatrix}.
+\end{equation}
+We can find two-level unitary matrices such that
+\begin{equation}
+    U_3U_2U_1U = I
+\end{equation}
+or, $U=U_1^\dag U_2^\dag U_3^\dag$. More generally, for $d$-dimensional space, $U$ can be written as
+\begin{equation}
+    U = V_1\cdots V_k
+\end{equation}
+where the matrices $V_i$ are unitary matrices and $k\leq (d-1) + (d-2) + \dots + 1 = d(d-1)/2$. This follows that any unitary operator on $n$ qubits can be written as a product of $2^{n-1}(2^n-1)$ two-level unitary matrices.
+
+\subsection{A discrete set of universal operators}
+\subsubsection{Approximating unitary operators}
+A \textit{discrete} set of gates can't describe any unitary operator, since the latter are continuous. Suppose we want to implement operator $U$ but what we actually implement is $V$, the \textit{error} when $V$ is implemented instead of $U$ is
+\begin{equation}
+    E(U,V) \equiv \max_{\qv}||(U-V)\qv||
+\end{equation}
+maximum is over all  normalized states $\qv$ of state space.
+\subsubsection{Universality of Hadamard + phase + \textsc{cnot} + $\pi/8$ gates}
+We're going to study two different discrete set of gates, both of which are universal. \textit{Standard set} consists of Hadamard, \textsc{cnot} and $\pi/8$ gates. The second set of gates contains Hadamard, phase, \textsc{cnot} and Toffoli gates. All of these gates can be done fault tolerantly. 
+
+It can be shown that using these gates, any rotation can be done up to desired accuracy. Given any single qubit operator $U$ and any $\epsilon>0$ it's possible to approximate $U$ within $\epsilon$ using a circuit composed of Hadamard and $\pi/8$ gates alone. This simulation is efficient, because the overhead required to perform the simulation is polynomial in $\log(m/\epsilon)$, where $m$ is number of gates in circuit and $\epsilon$ is desired accuracy.
+
+\subsection{Approximating arbitrary unitary gates is generically hard}
+There are states of $n$ qubits which take $\Omega(2^n\log(1/\epsilon)/\log(n))$ operations to approximate to within a distance $\epsilon$. This is exponential in $n$, and thus is 'difficult'. This implies that there are unitary transformations $U$ on $n$ qubits which take $\Omega(2^n\log(1/\epsilon)/\log(n))$ operations to approximate by a quantum circuit implementing an operation $V$ such that $E(U,V) \leq \epsilon$.
+\section{Simulation of quantum systems}
+To simulate, solutions of differential equations capturing physical laws governing the dynamical behaviour of the system. For example the Newton's law,
+\begin{equation}
+    \frac{d}{dt}\left(m\frac{dx}{dt}\right) = F,
+\end{equation}
+Poisson's equation,
+\begin{equation}
+    -\Vec{\nabla}\cdot(k\Vec{\nabla}\Vec{u}) = \Vec{Q},
+\end{equation}
+the electromagnetic vector wave equation,
+\begin{equation}
+    \Vec{\nabla}\cdot\Vec{\nabla}\Vec{E} = \epsilon_0\mu_0\frac{\partial^2\Vec{E}}{\partial t^2},
+\end{equation}
+and the diffusion equation,
+\begin{equation}
+    \Vec{\nabla}^2\psi = \frac{1}{a^2} \frac{\partial \psi}{\partial t},
+\end{equation}
+Solutions for these are obtained by using \textit{approximation}. However simulation of quantum systems by classical computers is inefficient. Many simple quantum systems are governed by
+\begin{equation}
+    i\hbar\frac{d}{dt}\qv = H\qv.
+\end{equation}
+For a Hamiltonian dealing with particles in space, this reduces to
+\begin{equation}
+    i\frac{\partial}{\partial x}\psi(x) = \left[-\frac{1}{2m}\frac{\partial^2}{\partial x^2} + V(x)\right] \psi(x),
+\end{equation}
+using a convention known as the position representation $\braket{x|\psi} = \psi(x)$. The key challenge is there \textit{exponential} number of differential equations to be solved. For $n$ qubits, $2^n$ equations.
+
+Quantum computers can efficiently simulate quantum systems for which there is no known efficient classical simulation. This is similar to the fact that any quantum circuit can be designed from a discrete set of gates. Ofcourse, there are few operators which can't be efficiently approximated, similarly there are few systems with Hamiltonians which can't be efficiently simulated on a quantum computer.
+
+\subsection{The quantum simulation algorithm}
+Similar to how we use $y(t+\Delta t) \approx y(t)+f(y)\Delta t$ to solve $dy/dt=f(y)$. To solve $id\qv/dt = H\qv$, which for time independent $H$ is,
+\begin{equation}
+    \ket{\psi(t)} = e^{-iHt}\ket{\psi(0)}.
+\end{equation}
+Similarly, exponentiating $H$ would be very inefficient, thus we use $\ket{\psi(t+\Delta t)}
+\approx (I-iH\Delta t)\ket{\psi(t)}$. However this isn't very satisfactory. But this can be improved by writing it as a sum of Hamiltonians acting on fewer qubits.
+
+The heart of quantum simulation algorithms is the following asymptotic approximation theorem:
+\begin{theorem}[\textbf{Trotter formula}]
+    Let $A$ and $B$ be Hermitian operators. Then for any real $t$,
+    \begin{equation}
+        \lim_{n\rightarrow\infty}(e^{iAt/n}e^{iBt/n})^n = e^{i(A+B)t}.
+    \end{equation}
+\end{theorem}
+Here's an overview of quantum simulation algorithm,
+
+\begin{algorithm}
+     \SetAlgoLined\DontPrintSemicolon
+    \caption{Quantum simulation}
+    \SetKwInOut{KwIn}{Inputs}
+    \SetKwInOut{KwOut}{Outputs}
+    \SetKwInOut{KwRun}{Runtime}
+    \SetKwProg{myprog}{Procedure}{}{}
+
+    \KwIn{
+        (1) A Hamiltonian $H=\sum_kH_k$ acting on an $N$-dimensional system, where each $H_k$ acts on a small subsystem of size independent of $N$, (2) an initial state $\ket{\psi_0}$, of the system at $t=0$, (3) a positive, non-zero accuracy $\delta$, and (4) a time $t_f$ at which the evolved state is desired.
+    }
+    \KwOut{
+        A state $\ket{\Tilde{\psi}(t_f)}$ such that 
+        $|\braket{\Tilde{\psi}(t_f)|e^{-iHt_f}|\psi_0}|^2 \geq 1-\delta$.
+    }
+    \KwRun{
+        $O(\text{poly}(1/\delta))$ operations.
+    }
+    \myprog{}{
+        Choose a representation such that the state $\ket{\Tilde{\psi}}$ of $n=\text{poly}(\log{N})$ qubits approximates the system and the operators $e^{-iH_k\Delta t}$ have efficient quantum circuit approximations. Select an approximation method and $\Delta t$ such that the expected error is      acceptable (and $j\Delta t=t_f$ for an integer $j$), construct the corresponding quantum circuit $U_{\Delta t}$ for the iterative step, and do:\;
+        $\ket{\Tilde{\psi_0}} \leftarrow \ket{\psi_0};\ j=0$ \tcp*{initialize state}\;
+        $\rightarrow \ket{\Tilde{\psi_{j+1}}} = U_{\Delta t}\ket{\Tilde{\psi_j}}$\tcp*{iterative update}\;
+        $\rightarrow j=j+1; \text{ goto step 2 until } j\Delta t \geq t_f$ \tcp*{loop}\;
+        $\rightarrow \ket{\Tilde{\psi}(t_f} = \ket{\Tilde{\psi_j}}$ \tcp*{final result}
+    }
+\end{algorithm}
